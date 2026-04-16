@@ -1,0 +1,26 @@
+.o_infinite_scroll_sentinel {
+    min-height: 10px;
+
+    .spinner-border {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .o_load_more_btn {
+        min-width: 200px;
+        border-radius: 25px;
+        padding: 10px 24px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .o_infinite_scroll_end {
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem !important;
+    }
+}

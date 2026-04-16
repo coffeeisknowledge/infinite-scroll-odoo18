@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Infinite Scroll — Veloxio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        .hero { background: linear-gradient(135deg, #134e4a 0%, #14b8a6cc 100%); }
+        .feature-card { transition: transform .2s; }
+        .feature-card:hover { transform: translateY(-4px); }
+        .feature-icon { width: 48px; height: 48px; border-radius: 12px;
+                         display: flex; align-items: center; justify-content: center;
+                         font-size: 20px; }
+        .step-num { width: 32px; height: 32px; border-radius: 50%; color: #fff;
+                    display: flex; align-items: center; justify-content: center;
+                    font-weight: 700; font-size: 14px; }
+        .badge-pill { border-radius: 50px !important; }
+        pre code { font-size: 0.85rem; }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- HERO -->
+<section class="hero text-white py-5">
+    <div class="container py-3">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <div class="mb-3">
+                    <span class="badge rounded-pill px-3 py-2 fw-semibold"
+                          style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3)">
+                        <i class="fa fa-bolt me-1"></i>Veloxio
+                    </span>
+                </div>
+                <h1 class="display-5 fw-bold mb-3">Infinite Scroll</h1>
+                <p class="lead mb-4 opacity-90">Replace the default Odoo shop pagination with infinite scroll or a 'Load More' button. Products load automatically as customers scroll — a standard eCommerce experience.</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-primary badge-pill px-3 py-2 fs-6">
+                        <i class="fa fa-cube me-1"></i>Odoo 19.0
+                    </span>
+                    <span class="badge bg-success badge-pill px-3 py-2 fs-6">
+                        <i class="fa fa-shield me-1"></i>LGPL-3
+                    </span>
+                    <span class="badge badge-pill px-3 py-2 fs-6 text-dark"
+                          style="background:#fbbf24">
+                        <i class="fa fa-gift me-1"></i>FREE
+                    </span>
+                    <span class="badge bg-secondary badge-pill px-3 py-2 fs-6">
+                        <i class="fa fa-refresh me-1"></i>Shop UX
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="p-4 rounded-4" style="background:rgba(255,255,255,.1)">
+                    <i class="fa fa-refresh" style="font-size:5rem;opacity:.9"></i>
+                    <div class="mt-3 small opacity-75">v19.0.1.0.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-1 text-center">Features</h2>
+        <p class="text-muted text-center mb-5">Everything included — no paid upgrade needed</p>
+        <div class="row">
+            
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-arrow-down"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">Infinite Auto-load</h5>
+                    <p class="text-muted mb-0 small">Default mode: products load automatically as the user scrolls near the bottom using IntersectionObserver.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-hand-pointer-o"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">Load More Button</h5>
+                    <p class="text-muted mb-0 small">Alternative mode: a styled 'Load More' button appears at the bottom for explicit user control.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-filter"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">Filter Compatible</h5>
+                    <p class="text-muted mb-0 small">Filters, sorting, and categories all work — the next page respects the current URL query params.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-spinner"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">Loading Spinner</h5>
+                    <p class="text-muted mb-0 small">Bootstrap spinner shown while the next batch is loading.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">End Indicator</h5>
+                    <p class="text-muted mb-0 small">'All products loaded' message when there are no more pages.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm feature-card">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3" style="background:#14b8a620;color:#14b8a6">
+                        <i class="fa fa-code"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-2">No Backend Change</h5>
+                    <p class="text-muted mb-0 small">Uses standard Odoo shop URLs — fetches next page HTML and extracts the product grid.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-5" style="background:#f8fafc">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">How It Works</h2>
+                
+        <div class="d-flex gap-3 mb-3">
+            <div class="step-num flex-shrink-0" style="background:#14b8a6">1</div>
+            <div class="pt-1">Install the module</div>
+        </div>
+        <div class="d-flex gap-3 mb-3">
+            <div class="step-num flex-shrink-0" style="background:#14b8a6">2</div>
+            <div class="pt-1">The shop pagination is automatically hidden</div>
+        </div>
+        <div class="d-flex gap-3 mb-3">
+            <div class="step-num flex-shrink-0" style="background:#14b8a6">3</div>
+            <div class="pt-1">Products load as you scroll (infinite mode) or via 'Load More' button</div>
+        </div>
+        <div class="d-flex gap-3 mb-3">
+            <div class="step-num flex-shrink-0" style="background:#14b8a6">4</div>
+            <div class="pt-1">Set <code>data-infinite-scroll-mode='load_more'</code> on <code>&lt;body&gt;</code> to switch modes</div>
+        </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="fa fa-code me-2" style="color:#14b8a6"></i>Technical Details
+                        </h5>
+                        <p class="text-muted mb-0">Injects a sentinel <code>div</code> via <code>website_sale.products</code> template. Uses <code>IntersectionObserver</code> to trigger fetches. Fetches next page via native <code>fetch()</code> on the standard shop URL, extracts <code>#o_wsale_products_grid</code> children.</p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mt-3">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="fa fa-check-circle me-2" style="color:#14b8a6"></i>Compatibility
+                        </h5>
+                        <ul class="list-unstyled mb-0 text-muted">
+                            <li class="mb-1"><i class="fa fa-check text-success me-2"></i>Odoo 19.0 Community &amp; Enterprise</li>
+                            <li class="mb-1"><i class="fa fa-check text-success me-2"></i>Any Odoo website theme</li>
+                            <li class="mb-1"><i class="fa fa-check text-success me-2"></i>Mobile &amp; responsive</li>
+                            <li class="mb-0"><i class="fa fa-check text-success me-2"></i>No external dependencies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INSTALLATION -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4 text-center">Installation</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <ol class="mb-0">
+                            <li class="mb-2">Download the module from the Odoo App Store</li>
+                            <li class="mb-2">Copy <code>website_sale_infinite_scrolling</code> into your Odoo addons path</li>
+                            <li class="mb-2">Restart Odoo and update the module list</li>
+                            <li class="mb-2">Go to <strong>Apps</strong> → search for <strong>Infinite Scroll</strong></li>
+                            <li class="mb-0">Click <strong>Install</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-4 text-center text-muted" style="background:#134e4a;color:rgba(255,255,255,.6)!important">
+    <div class="container">
+        <p class="mb-1" style="color:rgba(255,255,255,.6)">
+            <strong style="color:#fff">Veloxio</strong> — Odoo 19 eCommerce Modules
+        </p>
+        <p class="mb-0 small" style="color:rgba(255,255,255,.4)">
+            Licensed under LGPL-3 &nbsp;·&nbsp; Free &amp; Open Source
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>

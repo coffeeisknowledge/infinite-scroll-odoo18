@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Inject scroll sentinel + load more button after the pager.
+        The pager is kept in DOM but hidden via CSS so the JS can still read
+        "next page" URL from it.
+    -->
+    <template id="infinite_scroll_sentinel" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='o_wsale_pager']" position="after">
+            <!-- Sentinel element for IntersectionObserver (infinite scroll mode) -->
+            <div id="o_infinite_scroll_sentinel" class="o_infinite_scroll_sentinel">
+                <div class="o_infinite_scroll_spinner text-center py-4 d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading more products...</span>
+                    </div>
+                </div>
+                <!-- Load More button (shown in load_more mode) -->
+                <div class="o_load_more_btn_container text-center py-4 d-none">
+                    <button class="btn btn-outline-primary o_load_more_btn" type="button">
+                        <i class="fa fa-arrow-down me-1"/>Load More Products
+                    </button>
+                </div>
+                <!-- End message -->
+                <div class="o_infinite_scroll_end text-center py-4 text-muted d-none">
+                    <small>All products loaded</small>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

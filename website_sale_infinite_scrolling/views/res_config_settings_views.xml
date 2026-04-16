@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Add Infinite Scroll setting under eCommerce settings page.
+        Uses a simple hidden input on the website body that the JS reads.
+    -->
+</odoo>
