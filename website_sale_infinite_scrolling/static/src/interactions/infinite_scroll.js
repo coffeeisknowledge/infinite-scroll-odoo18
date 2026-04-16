@@ -1,13 +1,19 @@
-import { Interaction } from '@web/public/interaction';
-import { registry } from '@web/core/registry';
+/** @odoo-module **/
+
+import publicWidget from "@web/legacy/js/public/public_widget";
 
 const MODE_INFINITE = 'infinite';
 const MODE_LOAD_MORE = 'load_more';
 
-export class InfiniteScroll extends Interaction {
-    static selector = '#o_infinite_scroll_sentinel';
+publicWidget.registry.infiniteScroll = publicWidget.Widget.extend({
+    selector: '#o_infinite_scroll_sentinel',
 
-    setup() {
+    /**
+     * @override
+     */
+    start: function () {
+        var def = this._super.apply(this, arguments);
+
         this._mode = MODE_INFINITE; // Default: infinite scroll
         this._currentPage = 1;
         this._hasMore = true;
@@ -18,25 +24,20 @@ export class InfiniteScroll extends Interaction {
         this._loadMoreBtnEl = this.el.querySelector('.o_load_more_btn');
         this._endEl = this.el.querySelector('.o_infinite_scroll_end');
         this._gridEl = document.querySelector('#o_wsale_products_grid');
-        this._pagerEl = document.querySelector('#o_wsale_pager');
-    }
+        this._pagerEl = document.querySelector('.products_pager');
 
-    start() {
-        if (!this._gridEl) return;
+        if (!this._gridEl) return def;
 
         // Read mode from body data attribute (set via website settings or default)
         const bodyMode = document.body.dataset.infiniteScrollMode;
         this._mode = bodyMode === 'load_more' ? MODE_LOAD_MORE : MODE_INFINITE;
-
-        // Detect current page from pager
-        this._currentPage = this._detectCurrentPage();
 
         // Check if there's a next page
         this._hasMore = this._detectHasMore();
 
         if (!this._hasMore) {
             this._showEnd();
-            return;
+            return def;
         }
 
         // Hide default pagination
@@ -49,39 +50,52 @@ export class InfiniteScroll extends Interaction {
         } else {
             this._setupIntersectionObserver();
         }
-    }
 
-    destroy() {
+        return def;
+    },
+
+    /**
+     * @override
+     */
+    destroy: function () {
         if (this._observer) {
             this._observer.disconnect();
         }
-    }
+        this._super.apply(this, arguments);
+    },
 
-    _detectCurrentPage() {
-        if (!this._pagerEl) return 1;
-        const activeLink = this._pagerEl.querySelector('.page-item.active .page-link, .active a');
-        return activeLink ? parseInt(activeLink.textContent.trim()) || 1 : 1;
-    }
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
 
-    _detectHasMore() {
+    /**
+     * @private
+     */
+    _detectHasMore: function () {
         if (!this._pagerEl) return false;
         // Check for a "next" link in the pager
         const nextLink = this._pagerEl.querySelector(
             'a[aria-label="Next"], .o_next, [rel="next"], li:last-child a'
         );
         return !!nextLink;
-    }
+    },
 
-    _getNextPageUrl() {
+    /**
+     * @private
+     */
+    _getNextPageUrl: function () {
         if (!this._pagerEl) return null;
         const nextLink = this._pagerEl.querySelector(
             'a[aria-label="Next"], .o_next, [rel="next"], li:last-child a'
         );
         return nextLink ? nextLink.href : null;
-    }
+    },
 
-    _setupIntersectionObserver() {
-        this._spinnerEl?.classList.remove('d-none');
+    /**
+     * @private
+     */
+    _setupIntersectionObserver: function () {
+        this._spinnerEl && this._spinnerEl.classList.remove('d-none');
         // Show spinner as sentinel
         this._observer = new IntersectionObserver(
             (entries) => {
@@ -92,18 +106,26 @@ export class InfiniteScroll extends Interaction {
             { rootMargin: '200px' }
         );
         this._observer.observe(this.el);
-    }
+    },
 
-    _showLoadMoreButton() {
-        this._loadMoreBtnEl?.classList.remove('d-none');
-        this._loadMoreBtnEl?.addEventListener('click', () => {
-            if (!this._loading && this._hasMore) {
-                this._loadNextPage();
-            }
-        });
-    }
+    /**
+     * @private
+     */
+    _showLoadMoreButton: function () {
+        this._loadMoreBtnEl && this._loadMoreBtnEl.classList.remove('d-none');
+        if (this._loadMoreBtnEl) {
+            this._loadMoreBtnEl.addEventListener('click', () => {
+                if (!this._loading && this._hasMore) {
+                    this._loadNextPage();
+                }
+            });
+        }
+    },
 
-    async _loadNextPage() {
+    /**
+     * @private
+     */
+    _loadNextPage: async function () {
         if (this._loading || !this._hasMore) return;
         this._loading = true;
 
@@ -118,9 +140,9 @@ export class InfiniteScroll extends Interaction {
         // Show loading indicator
         if (this._mode === MODE_LOAD_MORE && this._loadMoreBtnEl) {
             this._loadMoreBtnEl.disabled = true;
-            this._loadMoreBtnEl.innerHTML = '<i class="fa fa-spinner fa-spin me-1"/>Loading...';
+            this._loadMoreBtnEl.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i>Loading...';
         } else {
-            this._spinnerEl?.classList.remove('d-none');
+            this._spinnerEl && this._spinnerEl.classList.remove('d-none');
         }
 
         try {
@@ -136,7 +158,7 @@ export class InfiniteScroll extends Interaction {
 
             // Extract product items from the next page's grid
             const newGrid = doc.querySelector('#o_wsale_products_grid');
-            const newPager = doc.querySelector('#o_wsale_pager');
+            const newPager = doc.querySelector('.products_pager');
 
             if (newGrid) {
                 // Append the product items (oe_product divs) from new grid to current grid
@@ -158,32 +180,31 @@ export class InfiniteScroll extends Interaction {
                 this._showEnd();
             } else if (this._mode === MODE_LOAD_MORE && this._loadMoreBtnEl) {
                 this._loadMoreBtnEl.disabled = false;
-                this._loadMoreBtnEl.innerHTML = '<i class="fa fa-arrow-down me-1"/>Load More Products';
+                this._loadMoreBtnEl.innerHTML = '<i class="fa fa-arrow-down me-1"></i>Load More Products';
             }
-        } catch {
+        } catch (e) {
             // On error, restore load more button
             if (this._mode === MODE_LOAD_MORE && this._loadMoreBtnEl) {
                 this._loadMoreBtnEl.disabled = false;
-                this._loadMoreBtnEl.innerHTML = '<i class="fa fa-arrow-down me-1"/>Load More Products';
+                this._loadMoreBtnEl.innerHTML = '<i class="fa fa-arrow-down me-1"></i>Load More Products';
             }
         } finally {
             this._loading = false;
             if (this._mode === MODE_INFINITE) {
-                this._spinnerEl?.classList.add('d-none');
+                this._spinnerEl && this._spinnerEl.classList.add('d-none');
             }
         }
-    }
+    },
 
-    _showEnd() {
-        this._spinnerEl?.classList.add('d-none');
-        this._loadMoreBtnEl?.classList.add('d-none');
-        this._endEl?.classList.remove('d-none');
+    /**
+     * @private
+     */
+    _showEnd: function () {
+        this._spinnerEl && this._spinnerEl.classList.add('d-none');
+        this._loadMoreBtnEl && this._loadMoreBtnEl.classList.add('d-none');
+        this._endEl && this._endEl.classList.remove('d-none');
         if (this._observer) {
             this._observer.disconnect();
         }
-    }
-}
-
-registry
-    .category('public.interactions')
-    .add('website_sale_infinite_scrolling.infinite_scroll', InfiniteScroll);
+    },
+});

@@ -1,6 +1,6 @@
 {
     'name': 'eCommerce Infinite Scroll',
-    'version': '19.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Website/Website',
     'summary': 'Replace shop pagination with infinite scroll or a Load More button.',
     'description': """
@@ -37,6 +37,4 @@
     'application': False,
     'auto_install': False,
     'license': 'LGPL-3',
-    'price': 0.0,
-    'currency': 'EUR',
 }
