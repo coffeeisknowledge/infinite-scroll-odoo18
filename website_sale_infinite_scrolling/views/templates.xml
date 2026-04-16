@@ -6,7 +6,7 @@
         "next page" URL from it.
     -->
     <template id="infinite_scroll_sentinel" inherit_id="website_sale.products">
-        <xpath expr="//div[@id='o_wsale_pager']" position="after">
+        <xpath expr="//div[hasclass('products_pager')]" position="after">
             <!-- Sentinel element for IntersectionObserver (infinite scroll mode) -->
             <div id="o_infinite_scroll_sentinel" class="o_infinite_scroll_sentinel">
                 <div class="o_infinite_scroll_spinner text-center py-4 d-none">
